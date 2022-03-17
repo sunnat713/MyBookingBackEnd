@@ -17,16 +17,17 @@ class User(AbstractUser):
 def user_signal(sender, instance, **kwargs):
     if instance.pk:
         pswd_checked = False
-        old_password = User.objects.get(pk=instance.pk).password
-        print(pswd_checked)
-        # if instance.new:
-        #     pswd_checked = check_password(instance.new, old_password)
-        # elif instance.password:
-        #     pswd_checked = check_password(instance.password, old_password)
-            
-        # if not pswd_checked:
-        #     instance.set_password(instance.password)
-        # else:
-        #     raise ValidationError(_("Joriy parolingizni qayta kiritdingiz yangi parol kiriting!"))
+        new_pswd = None
+        
+        try:
+            new_pswd = getattr(instance, 'new')
+        except:
+            new_pswd = getattr(instance, "password")
+        else:
+            pass
+        print(new_pswd)
+        if not new_pswd.startswith("pbkdf2_sha256"):
+            instance.set_password(new_pswd)
+
     else:
         instance.set_password(instance.password)
