@@ -10,6 +10,10 @@ class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = "__all__"
+    
+    def create(self, validated_data):
+        validated_data['owner'] = self._context['request'].user
+        return super().create(validated_data)
 
 class RestaurantCategorySerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField()
@@ -28,12 +32,20 @@ class RestaurantMenuSerializer(serializers.ModelSerializer):
         model = RestaurantMenu
         fields = "__all__"
 
+    def create(self, validated_data):
+        validated_data['restaurant'].user_id = self._context['request'].user.id
+        return super().create(validated_data)
+
 class FoodBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodBook
         exclude = ("status",)
-        read_only_fields = ("user",)
-    
+        # read_only_fields = ("user",)
+
+    def create(self, validated_data):
+        validated_data['user'] = self._context['request'].user
+        return super().create(validated_data)
+
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
@@ -45,8 +57,13 @@ class SeatIMGSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SeatBookSerializer(serializers.ModelSerializer):
+    available_seats = serializers.ReadOnlyField()
     class Meta:
         model = SeatBook
         exclude = ("status",)
-        read_only_fields = ("user",)
+        # read_only_fields = ("user",)
+    
+    def create(self, validated_data):
+        validated_data['user'] = self._context['request'].user
+        return super().create(validated_data)
 

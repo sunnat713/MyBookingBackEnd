@@ -11,8 +11,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=20, null=True)
     photo = models.ImageField(upload_to=UploadTo("client/avatar"), blank=True, null=True)
     email = models.EmailField(unique=True, blank=True, null=True)
-
- 
+    status = models.CharField(max_length=1, choices=( ("1",_("owner")), ("2", _("user")) ), default="2", null=True)
+  
 @receiver(pre_save, sender=User)
 def user_signal(sender, instance, **kwargs):
     if instance.pk:
@@ -25,7 +25,6 @@ def user_signal(sender, instance, **kwargs):
             new_pswd = getattr(instance, "password")
         else:
             pass
-        print(new_pswd)
         if not new_pswd.startswith("pbkdf2_sha256"):
             instance.set_password(new_pswd)
 

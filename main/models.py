@@ -26,7 +26,7 @@ class RestaurantCategory(Time):
         return getattr(self, f'name_{get_language()}')
 
 class Restaurant(Time):
-    owner = models.ForeignKey("client.User", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey("client.User", on_delete=models.SET_NULL, null=True)
     category = models.ManyToManyField('RestaurantCategory')
     name = models.CharField(max_length=120, blank=True, null=True)
     logo = models.ImageField(upload_to=UploadTo("restaurant/logo"), null=True)
@@ -56,35 +56,35 @@ class RestaurantMenu(Time):
 class FoodBook(Time):
     user = models.ForeignKey("client.User", on_delete=models.CASCADE, default=None)
     food = models.ForeignKey("RestaurantMenu", on_delete=models.CASCADE, default=None, related_name="food", null=True)
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE, null=True)
     amount = models.PositiveSmallIntegerField(default=0, null=True)
+    sum = models.PositiveIntegerField(default=0, null=True, blank=True)
     status = models.CharField( max_length=4, choices=(("1","Done"), ("2", "Not yet"), ("3", "Doing")), default="2", null=True)
     book_start = models.DateTimeField(null=True)
     book_end = models.DateTimeField(null=True)
 
 
 #CafeSEATS--------------------------------
-# class SeatCategory(Time):
-#     name_uz = models.CharField(max_length=120, null=True)
-#     name_ru = models.CharField(max_length=120, null=True)
-#     name_en = models.CharField(max_length=120, null=True)
-#     icon = models.ImageField(UploadTo("returant/category"))
-
-#     @property
-#     def name(self):
-#         return getattr(self, f'name_{get_language()}')
-
-class Seat(Time):
-    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE, null=True)
-    # seat_category = models.ForeignKey('SeatCategory', on_delete=models.CASCADE, null=True)
+class SeatCategory(Time):
     name_uz = models.CharField(max_length=120, null=True)
     name_ru = models.CharField(max_length=120, null=True)
     name_en = models.CharField(max_length=120, null=True)
-    desc = models.TextField(max_length=1000, null=True, blank=True)
-    amount_seats = models.PositiveIntegerField(default=0, null=True, blank=True)
+    icon = models.ImageField(UploadTo("returant/category"))
 
     @property
     def name(self):
         return getattr(self, f'name_{get_language()}')
+
+class Seat(Time):
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE, null=True)
+    seat_category = models.ForeignKey('SeatCategory', on_delete=models.CASCADE, null=True)
+    seat_number = models.PositiveIntegerField(null=True)
+    desc = models.TextField(max_length=1000, null=True, blank=True)
+    amount_seats = models.PositiveIntegerField(default=0, null=True, blank=True)
+
+    # @property
+    # def name(self):
+    #     return getattr(self, f'name_{get_language()}')
 
 
 class Seat_Img(models.Model):
@@ -95,7 +95,12 @@ class Seat_Img(models.Model):
 class SeatBook(Time):
     user = models.ForeignKey("client.User", on_delete=models.CASCADE, default=None)
     seat = models.ForeignKey("Seat", on_delete=models.CASCADE, default=None, related_name="seat", null=True)
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE, null=True)
     number_of_people = models.PositiveSmallIntegerField(default=0, blank=True)
     status = models.CharField( max_length=4, choices=(("1","Done"), ("2", "Not yet"), ("3", "Doing")), default="2", null=True)
     book_start = models.DateTimeField(null=True)
     book_end = models.DateTimeField(null=True)
+
+    @property
+    def available_seats(self):
+        return self.seat.amount_seats - self.number_of_people
