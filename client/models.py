@@ -27,7 +27,6 @@ def user_signal(sender, instance, **kwargs):
     if instance.pk:
         pswd_checked = False
         new_pswd = None
-        
         try:
             new_pswd = getattr(instance, 'new')
         except:
