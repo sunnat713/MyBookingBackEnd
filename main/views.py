@@ -43,7 +43,7 @@ class RestaurantByCat(APIView, PageNumberPagination):
 class RestaurantCategoryView(ListCreateAPIView):
     queryset = RestaurantCategory.objects.all()
     serializer_class = RestaurantCategorySerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
 class RestaurantCategoryRetrieve(RetrieveUpdateDestroyAPIView):
     queryset = RestaurantCategory.objects.all()
