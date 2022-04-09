@@ -24,6 +24,7 @@ class User(AbstractUser):
 
 @receiver(pre_save, sender=User)
 def user_signal(sender, instance, **kwargs):
+    # print(instance.is_superuser)
     if instance.pk:
         pswd_checked = False
         new_pswd = None
@@ -37,4 +38,5 @@ def user_signal(sender, instance, **kwargs):
             instance.set_password(new_pswd)
 
     else:
-        instance.set_password(instance.password)
+        if not instance.is_superuser:
+            instance.set_password(instance.password)

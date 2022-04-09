@@ -8,6 +8,7 @@ from rest_framework.decorators import  api_view, permission_classes
 from rest_framework.response import Response
 from django.utils.translation import gettext_lazy as _
 from config.permissions import IsProfileOwner
+from rest_framework import status
 
 class UserView(ListCreateAPIView):
     queryset = User.objects.all()
@@ -26,10 +27,9 @@ class UserRetrieve(RetrieveUpdateDestroyAPIView):
 @api_view(["POST"])
 # @permission_classes([~IsAuthenticated])
 def user_login(request):
-
     user = authenticate(username=request.data.get("username"), password=request.data.get("password"))
     if user is None:
-        return Response({"error":_("Login yoki parol noto'g'ri!")})
+        return Response({"error":_("Login yoki parol noto'g'ri!")}, status=status.HTTP_400_BAD_REQUEST)
     token, created = Token.objects.get_or_create(user=user)
     return Response({
                     "token":token.key,
@@ -41,7 +41,7 @@ def user_login(request):
                         "first_name":user.first_name, 
                         "last_name":user.last_name
                         }
-            })
+            }, status=status.HTTP_200_OK)
 
 
 @api_view(['delete'])

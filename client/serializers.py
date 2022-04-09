@@ -20,15 +20,15 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise ValidationError(_("Parol va parolni tasdiqlash noto'g'ri!"))
         return attrs
     
-    # def create(self, validated_data):
-    #     user = User(
-    #     username=validated_data['username'],
-    #     # email=validated_data['email'],
-    #     phone=validated_data['phone']
-    #     )
-    #     user.set_password(validated_data['password'])
-    #     user.save()
-    #     return user
+    def create(self, validated_data):
+        user = User(
+        username=validated_data['username'],
+        email=validated_data['email'],
+        phone=validated_data['phone']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 
@@ -61,8 +61,8 @@ class PswdChangeSerializer(serializers.ModelSerializer):
         
         return data
     
-    # def update(self,instance, validated_data):
-    #     user = instance
-    #     user.set_password(validated_data['new'])
-    #     user.save()
-    #     return user
+    def update(self,instance, validated_data):
+        user = instance
+        user.set_password(validated_data['new'])
+        user.save()
+        return user

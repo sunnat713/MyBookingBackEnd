@@ -28,7 +28,7 @@ urlpatterns = [
     path("seat-by-res/<int:res_id>/", SeatByRes.as_view(), name="seat-by-res"),
 
     path("food-booking/", FoodBooking.as_view(), name="food-book"),
-    path("food-booking/<int:res_id>/", FoodBookRetrieve.as_view(), name="food-book-retrieve"),
+    path("food-booking/<int:pk>/", FoodBookRetrieve.as_view(), name="food-book-retrieve"),
     path("food-book-by-res/<int:res_id>/", FoodBookByRes.as_view(), name="food-book-by-res"),
 
     path("seat-booking/", SeatBooking.as_view(), name="seat-book"),
