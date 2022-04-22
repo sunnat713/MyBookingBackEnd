@@ -1,4 +1,3 @@
-from multiprocessing import context
 from .models import *
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.response import  Response
@@ -112,7 +111,7 @@ class SeatByRes(APIView, PageNumberPagination):
         return self.get_paginated_response({"data":serialized.data,"page_size":self.page_size})
 
 
-#Bokking Events
+#Booking Events
 class FoodBooking(ListCreateAPIView):
     queryset = FoodBook.objects.all()
     serializer_class = FoodBookSerializer

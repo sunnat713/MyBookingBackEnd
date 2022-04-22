@@ -35,5 +35,4 @@ urlpatterns = [
     path("seat-booking/<int:pk>/", SeatBookingRetrieve.as_view(), name="seat-book-retrieve"),
     path("seat-book-by-res/<int:res_id>/", SeatBookByRes.as_view(), name="seat-book-by-res"),
     
-    
-]   
+]

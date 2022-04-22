@@ -3,12 +3,18 @@ from .models import Setting, Restaurant, RestaurantCategory, RestaurantMenu, Foo
 # Register your models here.
 
 admin.site.register(Setting)
-admin.site.register(Restaurant)
 admin.site.register(RestaurantCategory)
 admin.site.register(FoodCategory)
 admin.site.register(RestaurantMenu)
 admin.site.register(FoodBook)
 admin.site.register(SeatBook)
+
+
+class RestaurantAdmin(admin.ModelAdmin):
+    list_display = ('name', 'user', 'created_at')
+    search_fields = ('name',)
+    filter_horizontal = ('category',)
+admin.site.register(Restaurant, RestaurantAdmin)
 
 class ImgInstatnceInine(admin.TabularInline):
     model = Seat_Img

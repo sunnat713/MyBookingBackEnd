@@ -28,7 +28,8 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path("api/", include('main.urls')),
-    path('client/',include('client.urls'))
+    path('client/',include('client.urls')),
+    path("search/", include("search.urls"))
     
 )
 

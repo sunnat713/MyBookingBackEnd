@@ -33,14 +33,16 @@ class ClientTest(APITestCase):
         }, format='json')
         self.assertEquals(response_register.status_code, status.HTTP_201_CREATED)
         
-        token = response_login.data["token"]
-        header = {"HTTP_AUTHORIZATION":"Token " + token}    
+        token = response_login.data["token"]  #token for header
+        header = {"HTTP_AUTHORIZATION":"Token " + token}    #header for permission views
         
+        #request for user update
         response_me = self.client.get("http://127.0.0.1:8000/uz/client/me/{}/".format(response_login.data['user']['id']),
                                 {}, **header,
                                 format='json')
         self.assertEqual(response_me.status_code, 200)
-    
+
+        #request for logout
         response_logout = self.client.delete('http://127.0.0.1:8000/ru/client/Logout/', {},
                                     **header, format='json')
         self.assertEqual(response_logout.status_code, 200)

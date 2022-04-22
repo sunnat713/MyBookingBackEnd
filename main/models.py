@@ -60,8 +60,8 @@ class FoodBook(Time):
     amount = models.PositiveSmallIntegerField(default=0, null=True)
     sum = models.PositiveIntegerField(default=0, null=True, blank=True)
     status = models.CharField( max_length=4, choices=(("1","Done"), ("2", "Not yet"), ("3", "Doing")), default="2", null=True)
-    book_start = models.DateTimeField(null=True)
-    book_end = models.DateTimeField(null=True)
+    # book_start = models.DateTimeField(null=True)
+    # book_end = models.DateTimeField(null=True)
 
 
 #CafeSEATS--------------------------------
