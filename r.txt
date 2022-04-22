@@ -3,6 +3,8 @@ backports.zoneinfo==0.2.1
 certifi==2021.10.8
 Django==4.0.3
 django-elasticsearch-dsl==7.2.2
+django-elasticsearch-dsl-drf==0.22.4
+django-nine==0.2.5
 djangorestframework==3.13.1
 elastic-transport==8.1.0
 elasticsearch==7.17.1
